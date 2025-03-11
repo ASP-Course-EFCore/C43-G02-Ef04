@@ -243,14 +243,78 @@ namespace Demo
             #endregion
 
             //When To Use Eager Loading Approach For Loading The Related Data/Navigational Property ?
-            //  - If You Know That You Will Always Need The Related Data.
+            //  - If You Know That You Will Always Need The Related Data like if you need to print this related data.
             //  - If You Need To Reduce Requests To Database [Just Send One Request To Bring Main Data And Related Data].
+
             #endregion
 
-            #region Part 05 Loading Related Data - Explicit Loading
+            #region Part 05 Loading Related Data - Explicit Loading [Manual Loading]
+            //Load Related Data/Navigational Property Manually After Load The Main Data 
+            //So There Are 2 requests To DB -> 
+            // First -> To Return The Main Data.
+            // Second -> To Return The Related Data.
 
+            //Explicit Loading Means manually loading related data after the main entity has already been retrieved 
+            //Uses the Entry() method combined with Reference() -> For Selecting The Navigational Property Represents The "One" relationship
+            //Uses the Entry() method combined with Collection() -> For Selecting The Navigational Property Represents The "Many" relationship
 
+            #region Example01- Get The Employee With Code "2" And it's Department Data.
 
+            //var Emp01WithDepartment = context.Employees.FirstOrDefault(E => E.Code == 2);//First Request to DB to Return Employee object/data With Code == 2.
+
+            //if(Emp01WithDepartment is not null)//I need to load the related data/Navigational Property to print "DepartmentName".
+            //{
+            //    Console.WriteLine($"Name:{Emp01WithDepartment.EmpName}");// Name: Sama
+            //    Console.WriteLine($"DepartmentID:{Emp01WithDepartment.DepartmentId}");// DepartmentID:90
+            //    context.Entry(Emp01WithDepartment).Reference(E => E.EmployeeDepartment).Load();//Second Request to DB To Load The Navigational Property "EmployeeDepartment" Explicitly
+            //    Console.WriteLine($"DepartmentName:{Emp01WithDepartment.EmployeeDepartment?.Name}");// DepartmentName:Sales [Related Data]
+            //}
+
+            //1- Get The Main Data in First Request
+            //2- Get The Related Data in Second Request
+
+            #endregion
+
+            #region Example02 - Get Department With Id = 90 And it's Employees
+
+            //var Department = context.Departments.FirstOrDefault(D => D.DeptId == 90);//By Default This Query Not load the relatedData/NavigationalProperty of this object which is the EmployeeDepartment which he is related to.
+
+            //if (Department is not null)
+            //{
+            //    Console.WriteLine($"DepartmentName:{Department.Name}");
+            //    Console.WriteLine();
+            //    context.Entry(Department).Collection(D => D.Employees).Load();//Load The Navigational Property "Many" To Print The Employees objects/data in this department Explicitly.
+            //    foreach (var emp in Department.Employees)
+            //    {
+            //        Console.WriteLine($"Code:{emp.Code} - Name:{emp.EmpName}");
+            //    }
+            //}
+
+            #endregion
+
+            #region Example03 - Get the Employees in Department 90 and Age more than 25.
+
+            //var Department = context.Departments.FirstOrDefault(D => D.DeptId == 90);
+
+            //if (Department is not null)
+            //{
+            //    Console.WriteLine($"DepartmentName:{Department.Name}");
+            //    Console.WriteLine();
+            //    context.Entry(Department).Collection(D => D.Employees).Query().Where(E => E.Age>25).Load();//Make Query on the returned collection of employees to filter them Age>25.
+            //    foreach (var emp in Department.Employees)
+            //    {
+            //        Console.WriteLine($"Code:{emp.Code} - Name:{emp.EmpName}");
+            //    }
+            //}
+
+            #endregion
+
+            //When To Use Explicit Loading Approach For Loading The Related Data/Navigational Property ?
+            //  - If you need to control when to load the related data to work on it.
+            //  - If you need to optimize performance by loading only what you need - not load data that you don't need it
+            //      like if use Eager Loading and don't work on the related data after load it
+            //  - With Explicit Loading - By default the related data of the main object not loaded unless you load it manually.            
+            
             #endregion
 
         }
