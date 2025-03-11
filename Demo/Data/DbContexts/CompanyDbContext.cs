@@ -17,7 +17,7 @@ namespace Demo.Data.DbContexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server = .; Database = Company03; Trusted_Connection = true; Encrypt = True; TrustServerCertificate = True");//Trust App To connect on sql server service throw Windows authentication.
+            optionsBuilder.UseSqlServer("Server = .; Database = IslamCompany; Trusted_Connection = true; Encrypt = True; TrustServerCertificate = True");//Trust App To connect on sql server service throw Windows authentication.
 
         }
 
@@ -35,12 +35,13 @@ namespace Demo.Data.DbContexts
             //            .OnDelete(DeleteBehavior.NoAction)//To Change the default behavior from "Cascade" to "NoAction".
             //            .IsRequired(true);//Make the column of relationship required.
 
-
-            modelBuilder.Entity<Department>().HasData
-                (
-                    new Department() { DeptId = 70, DeptName = "Design", DateOfCreation = new DateOnly(2024, 12, 13) },
-                    new Department() { DeptId = 80, DeptName = "Software", DateOfCreation = new DateOnly(2024, 1, 13) }
-                );
+            ///To insert data in department table with migrate of table department.
+            ///
+            //modelBuilder.Entity<Department>().HasData
+            //    (
+            //        new Department() { DeptId = 70, DeptName = "Design", DateOfCreation = new DateOnly(2024, 12, 13) },
+            //        new Department() { DeptId = 80, DeptName = "Software", DateOfCreation = new DateOnly(2024, 1, 13) }
+            //    );
         }
     }
 }

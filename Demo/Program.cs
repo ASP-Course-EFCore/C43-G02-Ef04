@@ -6,11 +6,35 @@ using System.Net.Http.Headers;
 
 namespace Demo
 {
+  
     internal class Program
     {
+        //I need this code run one time not every time App Run
+        //so put it inside this Constructor overload of class Program that run one time/Executed one time with first use of the program/App.
+        static Program()
+        {
+            ///03.Dynamic Data Seeding
+            ///
+            ///
+            ///Read The objects/data [Departments objects] from external file.
+            ///To use dynamic data seeding
+            ///We need function that called/executed once application run.
+            ///We Can make this function inside the CompanyDbContext Class
+            ///Or make new class has this function that take parameter of type CompanyDbContext.
+            ///Every DbContext has Function to make seed.
+            ///This Function DataSeeding() will try to read the data inside the file
+            ///If it do it return true.
+            ///If not return false.
+            ///I make seed only if the table not has data.
+            ///After make this function
+            ///I need to put it in place that first called when APP run which is "Main()"
+            using CompanyDbContext context = new CompanyDbContext();
+            context.Database.Migrate();//To Apply Any pending migration and at it to DB.
+            CompanyDbContextSeed.Seeding(context);//Seed for data.
+        }
         static void Main(string[] args)
         {
-            using CompanyDbContext context = new CompanyDbContext();
+            //using CompanyDbContext context = new CompanyDbContext();
             #region Part 03 Data Seeding
 
             ///It's a way to populate your database with initial data
@@ -86,8 +110,6 @@ namespace Demo
             //    Console.WriteLine("Seeding Done");
             //else
             //    Console.WriteLine("Seeding UnFinished");
-
-            CompanyDbContextSeed.Seeding(context);
 
             #endregion
         }

@@ -10,7 +10,7 @@ namespace Demo.Data.Models
     class Department
     {
         public int DeptId { get; set; }
-        public string DeptName { get; set; }
+        public string Name { get; set; }
         public DateOnly DateOfCreation { get; set; }
         public int Serial { get; set; }
 

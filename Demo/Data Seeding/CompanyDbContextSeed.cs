@@ -38,22 +38,30 @@ namespace Demo.Data_Seeding
         public static void Seeding(CompanyDbContext dbContext)
         {
 
-                if (!dbContext.Employees.Any() || !dbContext.Departments.Any())
-                {
-                var departments = File.ReadAllText("DataSeeding\\departments.json");
-                var Employees = File.ReadAllText("DataSeeding\\employees.json");
+            if (!dbContext.Departments.Any())
+            {
+                var departmentsData = File.ReadAllText("DataSeeding\\departments.json");
+                var departments = JsonSerializer.Deserialize<List<Department>>(departmentsData);
 
-                var EEmployees = JsonSerializer.Deserialize<List<Employee>>(Employees);
-                var ddepartments = JsonSerializer.Deserialize<List<Department>>(departments);
-
-                if(EEmployees?.Count>0 && ddepartments?.Count > 0)
+                if (departments?.Count > 0)
                 {
-                    dbContext.Departments.AddRange(ddepartments);
-                    dbContext.Employees.AddRange(EEmployees);
+                    dbContext.AddRange(departments);
                 }
                 dbContext.SaveChanges();
-                }
 
+            } 
+            if (!dbContext.Employees.Any())
+            {
+                var employeesData = File.ReadAllText("DataSeeding\\employees.json");
+                var employees = JsonSerializer.Deserialize<List<Employee>>(employeesData);
+
+                if (employees?.Count > 0)
+                {
+                    dbContext.AddRange(employees);
+                }
+                dbContext.SaveChanges();
+
+            } 
         }
     }
 }

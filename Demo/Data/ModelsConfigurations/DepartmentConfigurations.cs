@@ -20,7 +20,7 @@ namespace Demo.Data.ModelsConfigurations
             department.Property(D => D.DeptId)
                       .UseIdentityColumn(10, 10);
 
-            department.Property(D => D.DeptName)
+            department.Property(D => D.Name)
                       .HasColumnName("DepartmentName")
                       .HasColumnType("varchar")
                       .HasMaxLength(20)
