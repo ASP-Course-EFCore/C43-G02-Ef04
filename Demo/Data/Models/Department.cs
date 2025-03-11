@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace Demo.Data.Models
 {
     class Department
@@ -18,10 +20,10 @@ namespace Demo.Data.Models
         public int? DeptManagerId { get; set; }//Optional [Allow null when inserting data]
 
         [InverseProperty(nameof(Employee.ManagedDepartment))]
-        public Employee Manager { get; set; } = null!;
+        public virtual Employee Manager { get; set; } = null!;
 
         [InverseProperty(nameof(Employee.EmployeeDepartment))]
-        public ICollection<Employee> Employees { get; set; } = null!;
+        public virtual ICollection<Employee> Employees { get; set; } = null!;
                                                                      
     }
 }

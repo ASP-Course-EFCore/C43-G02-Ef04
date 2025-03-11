@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Demo.Data.Models
 {
     //[Owned]
-    class Address
+    public class Address
     {
         public string? City { get; set; }
         public string? Country { get; set; }

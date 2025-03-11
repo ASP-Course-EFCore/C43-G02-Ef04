@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace Demo.Data.Models
 {
     class Employee
@@ -48,7 +50,7 @@ namespace Demo.Data.Models
         public double GetNetSalary => Salary - (Salary * .2);
 
         [InverseProperty(nameof(Department.Manager))]
-        public Department? ManagedDepartment { get; set; }
+        public virtual Department? ManagedDepartment { get; set; }
 
         public Address EmpAddress { get; set; }
 
@@ -56,6 +58,6 @@ namespace Demo.Data.Models
         public int DepartmentId { get; set; }
 
         [InverseProperty(nameof(Department.Employees))]
-        public Department EmployeeDepartment { get; set; } = null!;
+        public virtual Department EmployeeDepartment { get; set; } = null!;
     }
 }

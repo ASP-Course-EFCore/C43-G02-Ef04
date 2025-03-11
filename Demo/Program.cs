@@ -4,6 +4,7 @@ using Demo.Data_Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Net.Http.Headers;
+using static Azure.Core.HttpHeader;
 
 namespace Demo
 {
@@ -314,7 +315,75 @@ namespace Demo
             //  - If you need to optimize performance by loading only what you need - not load data that you don't need it
             //      like if use Eager Loading and don't work on the related data after load it
             //  - With Explicit Loading - By default the related data of the main object not loaded unless you load it manually.            
-            
+
+            #endregion
+
+            #region Part 06 Loading Related Data - Lazy Loading
+            ///Lazy Loading means that related data of the main object is not loaded from the Database
+            /// until it's accessed for the first time/When use it 
+            /// So EF Core delays the loading of navigational properties until you explicitly use them
+            /// But EF Core Doesn't Enable Lazy Loading By Default [By Default is The Navigational Property Not Loaded Until You Explicit Load it]
+            ///So you need to Do extra configuration Manually To Enable Lazy Loading Environment [To Make The Default Of EF Core is load the navigational property when use it direct]. 
+            ///
+            ///Configure Lazy Loading Feature : 
+            /// 1.Install the package (Microsoft.EntityFrameWorkCore.Proxies) in your project.
+            /// 2.Configure Lazy Loading in your DbContext in The OnConfiguring() method -> "optionsBuilder.UseLazyLoadingProxies();"
+            /// 3.Make Access Modifier for All Model Classes "public"
+            ///     Or put this attribute on the namespace of the model class/on the file of your model class to make this class visible for the assembly "DynamicProxyGenAssembly2" -> [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+            /// 4.Make All Navigational Properties "Virtual"
+            ///
+            ///Why make classes "public" and Navigational properties "Virtual"?
+            /// - Because When Enable the Lazy Loading Environment
+            /// - EF Core Will make Proxy Class For each and every class model in your project
+            ///    And override the navigational properties which is in the model class
+            ///    To override behavior of get() method of this navigational property 
+            ///    To make it returned the data instead of return "null"  when call the property - [Load the data].
+            /// - So Must Make The Navigational properties "Virtual" To override it in the proxy class which inherit from model class
+            /// - Make Model Classes As "Public" because the proxy classes inherit from it in run time
+            /// - And those proxy classes Are in/CameFrom External package not from current project. 
+
+            #region Example01 - Get The Employee With Code "2" And it's Department Data.
+
+            //var Emp01WithDepartment = context.Employees.FirstOrDefault(E => E.Code == 2);
+
+            //if (Emp01WithDepartment is not null)
+            //{
+            //    Console.WriteLine($"Name:{Emp01WithDepartment.EmpName}");//Name: Sama
+            //    Console.WriteLine($"DepartmentID:{Emp01WithDepartment.DepartmentId}");//DepartmentID:90
+            //    Console.WriteLine($"DepartmentName:{Emp01WithDepartment.EmployeeDepartment?.Name}");//DepartmentName:Sales [Related Data Loaded Dynamically/ByDefault when use/call the Navigational property After Enable Lazy Loading Environment]
+            //}
+
+            #endregion
+
+            #region Example02 - Get Department With Id = 90 And it's Employees
+
+            //var Department = context.Departments.FirstOrDefault(D => D.DeptId == 90);//First Request To DB
+
+            //if (Department is not null)
+            //{
+            //    Console.WriteLine($"DepartmentName:{Department.Name}");//Main Data
+            //    Console.WriteLine();
+            //    foreach (var emp in Department.Employees)
+            //    {
+            //        Console.WriteLine($"Code:{emp.Code} - Name:{emp.EmpName}");//Related Data [Second Request To DB]
+            //    }
+
+            //    //DepartmentName: Sales
+
+            //    //Code:2 - Name:Sama
+            //    //Code:4 - Name:Soha
+            //    //Code:6 - Name:Sameh
+            //    //Code:7 - Name:Pola
+
+            //}
+
+            #endregion
+
+            //When To Use Lazy Loading Approach For Loading The Related Data/Navigational Property ?
+            //  - If you need to control when to load the related data to work on it.
+            //  - You Want To reduce the size of initial query.
+            //  - Return Related Data without Write Explicit Code.
+                       
             #endregion
 
         }
