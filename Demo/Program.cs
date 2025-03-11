@@ -227,8 +227,12 @@ namespace Demo
             //                                               .Where(E => E.EmployeeDepartment.Name == "Sales")
             //                                               .Select(E => new { E.EmpName, DepartmentName = E.EmployeeDepartment.Name });//To Select only EmpName from Table Employees and DepartmentName from Department Table - Not select all columns when this line executed in SQL.
 
+            ////  SELECT[e].[EmpName], [d].[DepartmentName]
+            ////  FROM[Employees] AS[e]
+            ////  INNER JOIN[Sales].[Departments] AS[d] ON[e].[DepartmentId] = [d].[DeptId]
+            ////  WHERE[d].[DepartmentName] = 'Sales'
 
-            //if(employeesInDepartmentHR is not null)
+            //if (employeesInDepartmentHR is not null)
             //{
             //    foreach (var emp in employeesInDepartmentHR)
             //    {
