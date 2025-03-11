@@ -242,6 +242,15 @@ namespace Demo
 
             #endregion
 
+            //When To Use Eager Loading Approach For Loading The Related Data/Navigational Property ?
+            //  - If You Know That You Will Always Need The Related Data.
+            //  - If You Need To Reduce Requests To Database [Just Send One Request To Bring Main Data And Related Data].
+            #endregion
+
+            #region Part 05 Loading Related Data - Explicit Loading
+
+
+
             #endregion
 
         }
