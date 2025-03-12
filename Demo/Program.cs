@@ -1,4 +1,5 @@
-﻿using Demo.Data.DbContexts;
+﻿using Castle.Components.DictionaryAdapter.Xml;
+using Demo.Data.DbContexts;
 using Demo.Data.Models;
 using Demo.Data_Seeding;
 using Microsoft.EntityFrameworkCore;
@@ -383,7 +384,123 @@ namespace Demo
             //  - If you need to control when to load the related data to work on it.
             //  - You Want To reduce the size of initial query.
             //  - Return Related Data without Write Explicit Code.
-                       
+
+            #endregion
+
+            #region Part 07 Joins Category - Join()
+            //Combining Data from multiple Collections Or Tables.
+
+            //Inner Join Join():
+            // Returns matching records from both tables based on a condition
+
+            #region Example01 - Get The Departments That Has Employees and Display EmpId-EmpName-DeptId-DeptName [work RelationShip]
+
+            //Department has many Employees [work] in it & One Employee Work in One Department.
+            // So we take Pk of Employees Table [One] As FK in Departments Table. 
+            //Hold First the Table That has the "PK" of the relationship "Departments"
+
+            #region 01 Fluent Syntax
+
+            //var result = context.Departments.Join(context.Employees
+            //                                          , D => D.DeptId/*Outer Selector -> PK*/
+            //                                          , E => E.DepartmentId/*Inner Selector ->FK*/
+            //                                          , (D, E) => new /*Result Selector*/
+            //                                          {
+            //                                              EmployeeCode = E.Code,
+            //                                              EmployeeName = E.EmpName,
+            //                                              DepartmentId = D.DeptId,
+            //                                              DepartmentName = D.Name
+            //                                          });
+            ////SELECT[e].[Code] AS[EmployeeCode], [e].[EmpName] AS[EmployeeName], [d].[DeptId] AS[DepartmentId], [d].[DepartmentName]
+            ////FROM[Sales].[Departments] AS[d]
+            ////INNER JOIN[Employees] AS[e] ON[d].[DeptId] = [e].[DepartmentId]
+            //foreach (var item in result)
+            //{
+            //    //Console.WriteLine($"EmployeeCode:{item.EmployeeCode}, EmployeeName:{item.EmployeeName}, DepartmentId:{item.DepartmentId}, DepartmentName:{item.DepartmentName}");
+            //    Console.WriteLine(item);
+            //}
+            ////{ EmployeeCode = 2, EmployeeName = Sama, DepartmentId = 90, DepartmentName = Sales }
+            ////{ EmployeeCode = 3, EmployeeName = Nadia, DepartmentId = 110, DepartmentName = Markting }
+            ////{ EmployeeCode = 4, EmployeeName = Soha, DepartmentId = 90, DepartmentName = Sales }
+            ////{ EmployeeCode = 5, EmployeeName = Mazen, DepartmentId = 110, DepartmentName = Markting }
+            ////{ EmployeeCode = 6, EmployeeName = Sameh, DepartmentId = 90, DepartmentName = Sales }
+            ////{ EmployeeCode = 7, EmployeeName = Pola, DepartmentId = 90, DepartmentName = Sales }
+
+            #endregion
+
+            #region 02 Query Syntax
+
+            //var result = from D in context.Departments
+            //             join E in context.Employees
+            //             on D.DeptId equals E.DepartmentId
+            //             select new
+            //             {
+            //                 EmployeeCode = E.Code,
+            //                 EmployeeName = E.EmpName,
+            //                 DepartmentId = D.DeptId,
+            //                 DepartmentName = D.Name
+            //             };
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            #endregion
+
+            #endregion
+
+            #region Example02 - Get The Employees that are managers and select Department Id - Department Name  - Manager Id - Manager Name.
+            //Department Has One Manager And Employee Manage one department.
+            //Department Must Has Manager - Employee May Manage Department
+            //Take "PK" of May "Employee" "Code" As "FK" in "Department".
+
+            #region 01 Fluent Syntax
+
+            //var result = context.Employees.Join(context.Departments
+            //                                       , E => E.Code
+            //                                       , D => D.DeptManagerId
+            //                                       , (E, D) => new
+            //                                       {
+            //                                           ManagedDepartmentId = D.DeptId,
+            //                                           ManagedDepartmentName = D.Name,
+            //                                           ManagerId = E.Code,
+            //                                           ManagerName = E.EmpName
+            //                                       });
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            ////{ ManagedDepartmentId = 90, ManagedDepartmentName = Sales, ManagerId = 6, ManagerName = Sameh }
+            ////{ ManagedDepartmentId = 100, ManagedDepartmentName = Media, ManagerId = 2, ManagerName = Sama }
+
+            #endregion
+
+            #region 02 Query Syntax
+
+            //var result = from E in context.Employees
+            //             join D in context.Departments
+            //             on E.Code equals D.DeptManagerId
+            //             select new
+            //             {
+            //                 ManagedDepartmentId = D.DeptId,
+            //                 ManagedDepartmentName = D.Name,
+            //                 ManagerId = E.Code,
+            //                 ManagerName = E.EmpName
+            //             };
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+            ////{ ManagedDepartmentId = 90, ManagedDepartmentName = Sales, ManagerId = 6, ManagerName = Sameh }
+            ////{ ManagedDepartmentId = 100, ManagedDepartmentName = Media, ManagerId = 2, ManagerName = Sama }
+
+            #endregion
+
+            #endregion
+
             #endregion
 
         }

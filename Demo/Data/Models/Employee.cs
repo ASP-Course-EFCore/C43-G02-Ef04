@@ -55,7 +55,7 @@ namespace Demo.Data.Models
         public Address EmpAddress { get; set; }
 
         [ForeignKey(nameof(EmployeeDepartment))]
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
 
         [InverseProperty(nameof(Department.Employees))]
         public virtual Department EmployeeDepartment { get; set; } = null!;
