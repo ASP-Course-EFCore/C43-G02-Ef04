@@ -503,6 +503,133 @@ namespace Demo
 
             #endregion
 
+            #region Part 08 Joins Category - GroupJoin()
+            //Group Join: EF Core 7 Feature
+            // - Groups The elements from the second collection based on a key in the first collection [LeftJoin + Group].
+
+            #region Example01 - Get The Departments That has Employees And it's Employees [Group]and Departments not has employees[Left Join] [Work Relationship].
+
+            #region 01 Fluent Syntax
+
+            //var result = context.Departments.GroupJoin(context.Employees
+            //                                              , D => D.DeptId/*PK of Relationship*/
+            //                                              , E => E.DepartmentId /*FK*/
+            //                                              , (D, Employees) => new
+            //                                              {
+            //                                                  Department = D,//Load All Columns Data Of Departments objects.
+            //                                                  Employees      // Load All Columns Data Of Employees objects
+            //                                              });
+
+            //foreach (var item in result)//Every "item" is consist of department object and collection of employees objects that work in this department [Group]. 
+            //{
+            //    Console.WriteLine($"Employees of Department \"{item.Department.Name}\": ");
+            //    foreach (var emp in item.Employees)
+            //    {
+            //        Console.WriteLine($"{emp.Code},{emp.EmpName},{emp.DepartmentId}");
+            //    }
+            //    Console.WriteLine();
+            //}
+            ////Employees of Department "Sales":
+            ////2,Sama,90
+            ////4,Soha,90
+            ////6,Sameh,90
+            ////7,Pola,90
+            ////
+            ////Employees of Department "Media":
+            ////
+            ////Employees of Department "Markting":
+            ////3,Nadia,110
+            ////5,Mazen,110 
+
+            #endregion
+
+            #region 02 Query Syntax
+
+            //var result = from D in context.Departments
+            //             join E in context.Employees
+            //             on D.DeptId equals E.DepartmentId into Groups /*This Range Variable "Group" contain the Employees that work in this department object*/
+            //             select new
+            //             {
+            //                 Department = D,
+            //                 Employees = Groups
+            //             };
+
+
+            //foreach (var item in result)//Every "item" is consist of department object and collection of employees objects that work in this department [Group]. 
+            //{
+            //    Console.WriteLine($"Employees of Department \"{item.Department.Name}\": ");
+            //    foreach (var emp in item.Employees)
+            //    {
+            //        Console.WriteLine($"{emp.Code},{emp.EmpName},{emp.DepartmentId}");
+            //    }
+            //    Console.WriteLine();
+            //}
+
+            #endregion
+
+            #endregion
+
+            #region Example02 - Get The Departments That has Employees And it's Employees [Group]and Departments not has employees[Left Join] [Work Relationship]  but Select only departments that has more than 2 employee.
+
+            #region 01 Fluent Syntax
+
+            //var result = context.Departments.GroupJoin(context.Employees
+            //                                              , D => D.DeptId/*PK of Relationship*/
+            //                                              , E => E.DepartmentId /*FK*/
+            //                                              , (D, Employees) => new
+            //                                              {
+            //                                                  Department = D,//Load All Columns Data Of Departments objects.
+            //                                                  Employees      // Load All Columns Data Of Employees objects
+            //                                              }).Where(D => D.Employees.Count()>2);
+
+            //foreach (var item in result)//Every "item" is consist of department object and collection of employees objects that work in this department [Group]. 
+            //{
+            //    Console.WriteLine($"Employees of Department \"{item.Department.Name}\": ");
+            //    foreach (var emp in item.Employees)
+            //    {
+            //        Console.WriteLine($"{emp.Code},{emp.EmpName},{emp.DepartmentId}");
+            //    }
+            //    Console.WriteLine();
+            //}
+            ////Employees of Department "Sales":
+            ////2,Sama,90
+            ////4,Soha,90
+            ////6,Sameh,90
+            ////7,Pola,90
+
+            #endregion
+
+            #region 02 Query Syntax
+
+            //var result = from D in context.Departments
+            //             join E in context.Employees
+            //             on D.DeptId equals E.DepartmentId into Groups /*This Range Variable "Group" contain the Employees that work in this department object*/
+            //             //where D.Employees.Count()>2
+            //             select new
+            //             {
+            //                 Department = D,
+            //                 Employees = Groups
+            //             } into Groups
+            //             where Groups.Employees.Count() > 2
+            //             select Groups;
+
+
+            //foreach (var item in result)//Every "item" is consist of department object and collection of employees objects that work in this department [Group]. 
+            //{
+            //    Console.WriteLine($"Employees of Department \"{item.Department.Name}\": ");
+            //    foreach (var emp in item.Employees)
+            //    {
+            //        Console.WriteLine($"{emp.Code},{emp.EmpName},{emp.DepartmentId}");
+            //    }
+            //    Console.WriteLine();
+            //}
+
+            #endregion
+
+            #endregion
+
+            #endregion
+
         }
     }
 }
